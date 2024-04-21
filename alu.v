@@ -1,22 +1,54 @@
+// Code your design here
 //alu
 module alu(
   input signed[15:0]A,
   input signed[15:0]B,
   input Cin,
-  input [3:0]Sel
-  output signed[15:0]result;
+  input [3:0]sel,
+  output reg signed[15:0]result
 );
   wire ovf,cout;
+  reg [15:0]addr,mulr,divr,nandr,norr,notr,xorr;
   wire [15:0]remainder;
+  
+  //addition
+  reg oo;
+  reg [15:0] rae;
+  Adder16Bit add(A,B,Cin,cout,addr,ovf);
+  
+  	  
+  Mult16Bit mul (A,B,mulr);
+  
+  
+  division div (A,B,divr,remainder);
+  
+  
+  nandop n1(A,B,nandr);
+  
+  
+  norop n2 (A,B,norr);
+  
+  
+  notop n3(A,notr);
+  
+  
+  xorop x1(A,B,xorr);
+  //
+  
+  //
+  //
+  
+ 
   always@(*)begin
     case(sel)
-      4'b0000:Adder16Bit(A,B,Cin,cout,result,ovf);
-      4'b0001:Mult16Bit(A,B,result);
-      4'b0010:division(A,B,result,remainder);
-      4'b0011:nandop(A,B,result);
-      4'b0100:norop(A,B,result);
-      4'b0101:notop(A,result);
-      4'b0110:xorop(A,B,result);
+      4'b0000:result=addr;
+      4'b0001: result=mulr;
+      4'b0010:result=divr;
+      4'b0011: result=nandr;
+      4'b0100: result=norr;
+      4'b0101: result=notr;
+      4'b0110: result=xorr;
+    endcase
   end
 endmodule
 //koggestone
@@ -143,7 +175,7 @@ module nandop(
   input [15:0]B,
   output [15:0]nandout
 );
-  assign andout=~(A&B);
+  assign nandout=~(A&B);
 endmodule
 
 //norop
