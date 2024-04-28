@@ -23,10 +23,10 @@
 module DataMem(clk,wd,din,addr,dout);
 //wd=1 write else read
 input reg clk,wd;
-input reg [15:0]din;
+    input reg [63:0]din;
 input reg [7:0] addr;
 output reg [15:0] dout;
-reg [255:0]RAM[15:0];
+    reg [255:0]RAM[63:0];
 
 always@(posedge clk)begin
     if(wd)begin 
